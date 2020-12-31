@@ -27,7 +27,12 @@
       </van-field>
     </van-cell-group>
     <div class="login_btn_wrap">
-      <van-button class="login_btn" type="info" block>登录</van-button>
+      <van-button
+        class="login_btn"
+        type="info"
+        block
+        @click="onLogin"
+      >登录</van-button>
     </div>
 
   </div>
@@ -36,6 +41,7 @@
 
 </template>
 <script>
+import { login } from '@/api/user'
 export default {
   name: 'LoginIndex',
   data () {
@@ -47,6 +53,15 @@ export default {
     }
   },
   methods: {
+    async onLogin () {
+      // 1.找到数据接口
+      // 2. 封装请求方法
+      // 3. 请求调用登录
+      // 4. 处理响应结果
+      console.log('this.user', this.user)
+      const res = await login(this.user)
+      console.log('res', res)
+    }
   }
 }
 </script>

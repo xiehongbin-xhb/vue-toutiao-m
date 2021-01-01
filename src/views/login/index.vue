@@ -42,6 +42,7 @@
 </template>
 <script>
 import { login } from '@/api/user'
+import { Toast } from 'vant'
 export default {
   name: 'LoginIndex',
   data () {
@@ -58,11 +59,17 @@ export default {
       // 2. 封装请求方法
       // 3. 请求调用登录
       // 4. 处理响应结果
+      Toast.loading({
+        message: '登录中...',
+        forbidClick: true, // 是否禁止背景点击
+        duration: 0
+      });
       try {
         const res = await login(this.user);
-        console.log('res', res)
+        console.log('res', res);
+        Toast.success('登陆成功');
       } catch (err) {
-        console.log('err', err);
+        Toast.success('登陆失败');
         console.log('登录失败', err);
       }
     }

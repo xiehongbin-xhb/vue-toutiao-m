@@ -7,7 +7,7 @@ const addGetAdapter = function (url, func) {
   mock.onGet(url).reply(() => [200, func()]);
 }
 const addAnyAdapter = function (url, func) {
-  mock.onAny(url).reply((config) => [200, func()]);
+  mock.onAny(url).reply((config) => [200, func(config)]);
 }
 const random = function (min, max) {
   if (max === undefined) {
@@ -37,12 +37,22 @@ export default {
   init () {
     addAnyAdapter('/authorizations', (config) => {
       console.log('config', config);
-      return {
-        data: [
-          random(3),
-          random(10),
-          random(20)
-        ]
+      if (JSON.parse(config.data)) {
+        console.log('params', JSON.parse(config.data));
+        const params = JSON.parse(config.data);
+        if (params.mobile === '15606950280' && params.code === '123456') {
+          return {
+            data: ['登录成功']
+          }
+        }
+      } else {
+        return {
+          data: [
+            random(3),
+            random(10),
+            random(20)
+          ]
+        }
       }
     });
     addGetAdapter('/tempData', () => {

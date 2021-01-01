@@ -58,9 +58,13 @@ export default {
       // 2. 封装请求方法
       // 3. 请求调用登录
       // 4. 处理响应结果
-      console.log('this.user', this.user)
-      const res = await login(this.user)
-      console.log('res', res)
+      try {
+        const res = await login(this.user);
+        console.log('res', res)
+      } catch (err) {
+        console.log('err', err);
+        console.log('登录失败', err);
+      }
     }
   }
 }

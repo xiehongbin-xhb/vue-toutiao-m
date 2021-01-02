@@ -60,8 +60,8 @@ export default {
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '15606950280',
+        code: '123456'
       },
       isSendSmdLoding: false,
       isCountDownShow: false,
@@ -92,6 +92,9 @@ export default {
       const { data, status } = res;
       try {
         if (status === 200) {
+          const { data } = res;
+          // 将接口返回的用户信息保存到vuex中
+          this.$store.commit('setUser', data.data);
           Toast.success(data.data.message);
         } else {
           Toast.fail(data.data.message);

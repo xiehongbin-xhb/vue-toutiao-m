@@ -95,6 +95,8 @@ export default {
           const { data } = res;
           // 将接口返回的用户信息保存到vuex中
           this.$store.commit('setUser', data.data);
+          // 登录成功跳转回原来页面
+          this.$router.back();
           Toast.success(data.message);
         } else {
           Toast.fail(data.message);

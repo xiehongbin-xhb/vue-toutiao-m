@@ -8,6 +8,7 @@
     />
     <!-- 当表单提交时，会触发submit事件,只有表单通过验证之后才会触发onLogin事件-->
     <van-form @submit="onLogin"
+      ref="loginForm"
       :show-error = "false"
       :show-error-message = "false"
       @failed = "onFailed"
@@ -18,7 +19,7 @@
         clearable
         left-icon="shouji"
         icon-prefix="toutiao"
-        name="手机号"
+        name="mobile"
         placeholder="请输入手机号"
         :rules="formRules.mobile"
         />
@@ -27,16 +28,19 @@
         clearable
         left-icon="yanzhengma"
         icon-prefix="toutiao"
-        name="验证码"
+        name="code"
         placeholder="请输入验证码"
         :rules="formRules.code"
       >
         <template #button>
-          <van-button size="small" round class='send_btn'>发送验证码</van-button>
+          <!-- @click.prevent阻止默认行为 -->
+          <van-count-down v-if="isCountDownShow" :time="1000 * 60" format="ss s" @finish="isCountDownShow = false"/>
+          <van-button :loading="isSendSmdLoding" center v-else size="mini" round class='send_btn' @click.prevent="onSendSms">发送验证码</van-button>
         </template>
       </van-field>
       <div class="login_btn_wrap">
         <van-button
+          center
           class="login_btn"
           type="info"
           block
@@ -49,7 +53,7 @@
 
 </template>
 <script>
-import { login } from '@/api/user'
+import { login, sendSms } from '@/api/user'
 import { Toast } from 'vant'
 export default {
   name: 'LoginIndex',
@@ -59,6 +63,8 @@ export default {
         mobile: '',
         code: ''
       },
+      isSendSmdLoding: false,
+      isCountDownShow: false,
       formRules: {
         mobile: [
           { required: true, message: '请输入手机号' },
@@ -101,6 +107,33 @@ export default {
           position: 'top'
         });
       }
+    },
+    async onSendSms () {
+      // 校验手机号，如果验证通过才发生验证码
+      // 1. 禁止按钮默认行为（处于表单）
+      try {
+        await this.$refs.loginForm.validate('mobile');
+        // 加载中状态
+        this.isSendSmdLoding = true;
+        await sendSms(this.user.mobile);
+        // 显示倒计时
+        this.isCountDownShow = true;
+      } catch (error) {
+        let message = '';
+        if (error && error.response && error.response.status === 429) {
+          message = '发送太频繁了，请稍候重试';
+        } else if (error.name === 'mobile') {
+          message = error.message;
+        } else {
+          message = '未知错误'
+        }
+        this.$toast({
+          message,
+          position: 'top'
+        });
+      }
+      // 无论发送成功与否都应该恢复按钮状态
+      this.isSendSmdLoding = false;
     }
   }
 }

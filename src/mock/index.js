@@ -57,6 +57,14 @@ export default {
         }
       }
     });
+    addAnyAdapter('/sms/codes/15606950280', (config) => {
+      return {
+        data: {
+          message: 'OK'
+        },
+        status: 200
+      }
+    })
     addGetAdapter('/tempData', () => {
       let now = Date.now();
       const data = [];

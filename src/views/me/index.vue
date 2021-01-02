@@ -13,9 +13,9 @@
           round
           fit="cover"
           slot="icon"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="imgSrc"
         />
-        <div slot="title" class="name">小智同学</div>
+        <div slot="title" class="name">{{currentUser.name ? currentUser.name : '-'}}</div>
         <van-button
           class="update_btn"
           size="small"
@@ -24,16 +24,16 @@
       </van-cell>
       <van-grid :border='false' class="data_info">
         <van-grid-item  text="头条" class="data_info_item">
-          <span slot="icon" class="count">123</span>
+          <span slot="icon" class="count">{{currentUser.art_count }}</span>
         </van-grid-item>
         <van-grid-item  text="关注"  class="data_info_item">
-          <span slot="icon" class="count">123</span>
+          <span slot="icon" class="count">{{currentUser.follow_count }}</span>
         </van-grid-item>
         <van-grid-item  text="粉丝"  class="data_info_item">
-          <span slot="icon" class="count">123</span>
+          <span slot="icon" class="count">{{currentUser.fans_count }}</span>
         </van-grid-item>
         <van-grid-item  text="获赞"  class="data_info_item">
-          <span slot="icon" class="count">123</span>
+          <span slot="icon" class="count">{{currentUser.like_count }}</span>
         </van-grid-item>
       </van-grid>
     </van-cell-group>
@@ -58,19 +58,28 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { getCurrentUser } from '@/api/user'
 export default {
   name: 'me',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      // 当前用户信息
+      currentUser: {}
+    }
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
+    imgSrc () {
+      return this.currentUser.photo ? this.currentUser.photo : require('./avator.jpg');
+    }
   },
-  created () {},
+  created () {
+    this.loadCurrentUser();
+  },
   mounted () {
-    console.log('user', this.user);
+    console.log('user', this.currentUser);
   },
   methods: {
     onLogout () {
@@ -85,11 +94,24 @@ export default {
         .catch(() => {
           // on cancel
         })
+    },
+    async loadCurrentUser () {
+      if (!this.user) return;
+      const { data } = await getCurrentUser();
+      console.log('data', data);
+      this.currentUser = data.data;
     }
   }
 }
 </script>
+
 <style lang="less" scoped>
+// 添加scoped属性之后，这个组件内的样式不会影响其他属性
+// 在有作用域的组件中 如何给子组件设置样式
+// 默认只能作用到子组件的根节点 如HelloWorld组件 根节点是 class=hello 的div
+// 如果是第三方的组件，就不知道根节点的类名，可以通过审查元素查看类名，或者给第三方组件手动设置类名
+// 任何组件上的类名都会默认作用到根节点
+// 如果要设置子组件的内部节点样式，使用/deep/ 操作符（深度作用操作符） 还可以使用 三个大于号 >>>
 .my-container {
   .my_info {
     background: url('./banner.png') no-repeat;

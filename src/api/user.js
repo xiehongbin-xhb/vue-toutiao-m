@@ -8,9 +8,20 @@ export const login = (data) => {
     data
   })
 }
+// 发送验证码
 export const sendSms = (mobile) => {
   return request({
     method: 'GET',
     url: `/sms/codes/${mobile}`
+  })
+}
+// 获取用户登录信息
+export const getCurrentUser = () => {
+  return request({
+    method: 'GET',
+    url: '/user'
+    // headers: {
+    //   Authorization: `Bearer ${store.state.user.token}`
+    // }
   })
 }

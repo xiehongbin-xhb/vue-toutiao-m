@@ -67,6 +67,25 @@ export default {
         status: 200
       }
     })
+    addAnyAdapter('/user', (config) => {
+      if (config.headers.Authorization) {
+        return {
+          data: {
+            id: '', // 用户id
+            name: '黑马头条号', // 用户名
+            photo: '', // 用户头像
+            is_media: 0, // 是否是自媒体  0 否 1 是
+            intro: '', // 简介
+            certi: '', // 自媒体认证声明
+            art_count: 0, // 发布文章数
+            follow_count: 0, // 关注的数目
+            fans_count: 0, // 被关注的数目
+            like_count: 0 // 被点赞的数目
+          },
+          status: 200
+        }
+      }
+    })
     addGetAdapter('/tempData', () => {
       let now = Date.now();
       const data = [];

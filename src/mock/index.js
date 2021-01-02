@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 import request from '@/util/request'
-import formatDate from '@/util/lib'
+import { formatDate } from '@/util/lib'
 
 const mock = new MockAdapter(request)
 const addGetAdapter = function (url, func) {
@@ -42,16 +42,18 @@ export default {
         const params = JSON.parse(config.data);
         if (params.mobile === '15606950280' && params.code === '123456') {
           return {
-            data: ['登录成功']
+            data: {
+              message: ' 登录成功 '
+            },
+            status: 200
           }
         }
       } else {
         return {
-          data: [
-            random(3),
-            random(10),
-            random(20)
-          ]
+          data: {
+            message: ' 账号或者验证码错误 '
+          },
+          status: 400
         }
       }
     });

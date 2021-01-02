@@ -6,35 +6,43 @@
       left-arrow
       @click-left="$router.back()"
     />
-    <van-cell-group>
+    <!-- 当表单提交时，会触发submit事件,只有表单通过验证之后才会触发onLogin事件-->
+    <van-form @submit="onLogin"
+      :show-error = "false"
+      :show-error-message = "false"
+      @failed = "onFailed"
+      validate-first
+    >
       <van-field
         v-model="user.mobile"
         clearable
         left-icon="shouji"
         icon-prefix="toutiao"
+        name="手机号"
         placeholder="请输入手机号"
-      />
+        :rules="formRules.mobile"
+        />
       <van-field
         v-model="user.code"
         clearable
         left-icon="yanzhengma"
         icon-prefix="toutiao"
+        name="验证码"
         placeholder="请输入验证码"
+        :rules="formRules.code"
       >
         <template #button>
           <van-button size="small" round class='send_btn'>发送验证码</van-button>
         </template>
       </van-field>
-    </van-cell-group>
-    <div class="login_btn_wrap">
-      <van-button
-        class="login_btn"
-        type="info"
-        block
-        @click="onLogin"
-      >登录</van-button>
-    </div>
-
+      <div class="login_btn_wrap">
+        <van-button
+          class="login_btn"
+          type="info"
+          block
+        >登录</van-button>
+      </div>
+    </van-form>
   </div>
 
   <!-- 登录表单 -->
@@ -50,6 +58,16 @@ export default {
       user: {
         mobile: '',
         code: ''
+      },
+      formRules: {
+        mobile: [
+          { required: true, message: '请输入手机号' },
+          { pattern: /^1[3|5|7|8|9]\d{9}$/, message: '手机号格式错误' }
+        ],
+        code: [
+          { required: true, message: '请输入验证码' },
+          { pattern: /^\d{6}$/, message: '验证码格式错误' }
+        ]
       }
     }
   },
@@ -64,13 +82,24 @@ export default {
         forbidClick: true, // 是否禁止背景点击
         duration: 0
       });
+      const res = await login(this.user);
+      const { data, status } = res;
       try {
-        const res = await login(this.user);
-        console.log('res', res);
-        Toast.success('登陆成功');
+        if (status === 200) {
+          Toast.success(data.data.message);
+        } else {
+          Toast.fail(data.data.message);
+        }
       } catch (err) {
-        Toast.success('登陆失败');
-        console.log('登录失败', err);
+        Toast.fail('登陆失败');
+      }
+    },
+    onFailed (err) {
+      if (err.errors[0]) {
+        this.$toast({
+          message: err.errors[0].message,
+          position: 'top'
+        });
       }
     }
   }

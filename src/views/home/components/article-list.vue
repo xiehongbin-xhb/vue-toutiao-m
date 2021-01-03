@@ -55,9 +55,7 @@ export default {
         timeStamp: this.timeStamp || Date.now(), // 时间戳 请求当前新的推荐数据，传递当前的时间戳，请求历史推荐数据，传历史时间戳
         with_top: 1 // 是否包含置顶文章,进入页面第一次请求时要包含置顶文章， 1包含 0 不包含
       });
-      console.log(' result data', data);
       const { results } = data.data;
-      console.log('results', results);
       this.articles.push(...results);
       // // 加载状态结束
       this.loading = false;
@@ -75,7 +73,6 @@ export default {
       // }
     },
     async onRefresh () {
-      console.log('下拉刷新');
       const { data } = await getArticles({
         channel_id: this.channel.id,
         timestamp: Date.now(),

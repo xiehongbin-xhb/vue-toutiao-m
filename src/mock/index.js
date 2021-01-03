@@ -1,15 +1,43 @@
 import MockAdapter from 'axios-mock-adapter'
 import request from '@/util/request'
 import { formatDate } from '@/util/lib'
+import { setItem, getItem } from '@/util/storage'
 const channelsData = [
   { id: 0, name: '推荐' },
-  { id: 5, name: 'android' },
-  { id: 10, name: '前端' },
-  { id: 17, name: '后端' },
-  { id: 8, name: 'WebGL' },
-  { id: 15, name: '产品' },
+  { id: 1, name: '前端' },
+  { id: 2, name: '后端' },
+  { id: 3, name: 'Android' },
+  { id: 4, name: 'iOS' },
+  { id: 5, name: '人工智能' },
+  { id: 6, name: '开发工具' },
+  { id: 7, name: '代码人生' },
+  { id: 8, name: '阅读' }
+]
+const AllChannelsData = [
+  { id: 1, name: '前端' },
+  { id: 2, name: '后端' },
+  { id: 3, name: 'Android' },
+  { id: 4, name: 'iOS' },
+  { id: 5, name: '人工智能' },
+  { id: 6, name: '开发工具' },
+  { id: 7, name: '代码人生' },
+  { id: 8, name: '阅读' },
+  { id: 9, name: '沸点' },
+  { id: 10, name: '小册' },
+  { id: 11, name: '活动' },
+  { id: 12, name: '掘金' },
+  { id: 13, name: '设计模式' },
+  { id: 14, name: 'jQuery' },
+  { id: 15, name: 'Vue' },
+  { id: 16, name: 'React' },
+  { id: 17, name: 'VS' },
+  { id: 18, name: 'WebGL' },
   { id: 19, name: '架构' },
   { id: 20, name: '区块链' },
+  { id: 21, name: '面试' },
+  { id: 22, name: 'GIS' },
+  { id: 23, name: 'Ubuntu' },
+  { id: 24, name: 'Debug' },
   { id: 25, name: 'JavaScript' }
 ]
 const refreshList = [
@@ -918,9 +946,7 @@ const random = function (min, max) {
 export default {
   init () {
     addAnyAdapter('/authorizations', (config) => {
-      console.log('config', config);
       if (JSON.parse(config.data)) {
-        console.log('params', JSON.parse(config.data));
         const params = JSON.parse(config.data);
         if (params.mobile === '15606950280' && params.code === '123456') {
           return {
@@ -969,19 +995,60 @@ export default {
       }
     })
     addAnyAdapter('/channels', (config) => {
-      console.log('channels', channelsData);
+      let channels = channelsData;
+      if (getItem('mockData-userChannel') && getItem('mockData-userChannel') !== undefined) {
+        channels = getItem('mockData-userChannel');
+      } else {
+        setItem('mockData-userChannel', channels);
+      }
       return {
         data: {
-          channels: channelsData
+          channels: channels
         },
         status: 200
       }
     })
+    addAnyAdapter('/AllChannels', (config) => {
+      return {
+        data: {
+          channels: AllChannelsData
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/addChannels', (config) => {
+      const fixData = JSON.parse(config.data);
+      const pushChannel = fixData.channels[0];
+      AllChannelsData.forEach(d => {
+        if (d.id === pushChannel.id) {
+          const mockDataStorage = getItem('mockData-userChannel');
+          mockDataStorage.push(d);
+          setItem('mockData-userChannel', mockDataStorage);
+        }
+      })
+      return {
+        status: 200
+      }
+    })
+    addAnyAdapter('/deleteChannels', (config) => {
+      const id = config.params.id;
+      AllChannelsData.forEach((d, index) => {
+        if (d.id === id) {
+          // 找到要删除的那一项
+          if (getItem('mockData-userChannel')) {
+            const mockDataStorage = getItem('mockData-userChannel');
+            mockDataStorage.splice(index + 1, 1);
+            setItem('mockData-userChannel', mockDataStorage);
+          }
+        }
+      })
+      return {
+        status: 200
+      }
+    })
     addAnyAdapter('/articles', (config) => {
-      console.log('config', config);
       let results = [];
       if (config.params.isRefresh) {
-        console.log('config.params.isRefresh', config.params.isRefresh);
         return {
           data: {
             pre_timestamp: 1609646304064,
@@ -990,20 +1057,18 @@ export default {
           },
           status: 200
         }
-      } else if (config.params.channel_id === 10) {
+      } else if (config.params.channel_id === 1) {
         // 返回前端的文章
         results = articleList2
-      } else if (config.params.channel_id === 5) {
+      } else if (config.params.channel_id === 3) {
         // 返回安卓的文章
         results = articleList3
       } else if (config.params.channel_id === 0) {
-        console.log('id === 0');
         // 返回推荐的文章
         results = articleList1
       } else {
         results = articleList4
       }
-      console.log('results1111', results);
       return {
         data: {
           pre_timestamp: 1609646304064,

@@ -37,7 +37,13 @@
       position="bottom"
       class="channel-edit-popup"
     >
-      <channel-edit />
+    <!-- $event 表示事件接受的参数 -->
+      <channel-edit
+        @closePopup="isChannelEditShow = false"
+        @update-active="active = $event"
+        :activeNum = "active"
+        :user-channels = "channels"
+      />
     </van-popup>
   </div>
 </template>
@@ -45,6 +51,8 @@
 import { getUserChannel } from '@/api/user'
 import ArticleList from './components/article-list'
 import ChannelEdit from './components/channel-edit'
+import { mapState } from 'vuex'
+import { getItem } from '@/util/storage'
 export default {
   name: 'home',
   components: { ArticleList, ChannelEdit },
@@ -52,17 +60,42 @@ export default {
     return {
       active: 0,
       channels: [],
-      isChannelEditShow: true // 控制频道编辑弹出层
+      isChannelEditShow: false // 控制频道编辑弹出层
     }
   },
   methods: {
     async loadChannels () {
-      const { data } = await getUserChannel();
-      console.log('data', data);
-      this.channels = data.data.channels;
+      let channelData = [];
+      if (this.user) {
+        // 登录了
+        const { data } = await getUserChannel();
+        channelData = data.data.channels;
+      } else {
+        // 未登录
+        // 判断是否有本地缓存，有就加载，没有就获取推荐的频道
+        const localChannel = getItem('user-channels');
+        if (localChannel) {
+          channelData = localChannel;
+        } else {
+          // 没有登录，也没有本地数据，请求获取默认推荐的频道接口
+          // const { data } = await getUserChannel(); 还是这个接口，如果是匿名用户则返回默认的频道接口数据
+          // 这里测试的话 就写死
+          channelData = [
+            { id: 0, name: '推荐' },
+            { id: 1, name: '前端' },
+            { id: 2, name: '后端' }
+          ]
+        }
+      }
+      this.channels = channelData;
     }
+    // onUpdateActive (index) {
+    //   this.active = index;
+    // }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   props: {},
   watch: {},
   created () {

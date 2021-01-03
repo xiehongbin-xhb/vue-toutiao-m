@@ -9,6 +9,7 @@ import './styles/index.less'
 // 自动设置REM基准值 即html标签字体大小：根据不同设备
 import 'amfe-flexible'
 import mock from '@/mock'
+import '@/util/dayjs'
 process.env.NODE_ENV === 'development' && mock.init()
 Vue.use(Vant)
 Vue.config.productionTip = false

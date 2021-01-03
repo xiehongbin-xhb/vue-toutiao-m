@@ -15,27 +15,44 @@
     </van-nav-bar>
     <!-- 文章频道列表 -->
     <!-- 标签页组件就有一个功能，只有第一次查看标签页的时候才会渲染里面的内容 -->
-    <van-tabs v-model="active">
+    <van-tabs v-model="active" class="channel-tabs">
       <van-tab
+        class="channel-tabs-item"
         :title="channel.name"
         v-for="channel in channels"
         :key= "channel.id"
       >
         <article-list :channel = channel />
       </van-tab>
+      <div slot="nav-right" class="wap-placeholder"></div>
+      <div slot="nav-right" >
+        <van-icon  name="wap-nav" @click="isChannelEditShow=true" class="wap-nav-wrap"/>
+      </div>
     </van-tabs>
+    <van-popup
+      v-model="isChannelEditShow"
+      closeable
+      get-container="body"
+      close-icon-position="top-left"
+      position="bottom"
+      class="channel-edit-popup"
+    >
+      <channel-edit />
+    </van-popup>
   </div>
 </template>
 <script>
 import { getUserChannel } from '@/api/user'
 import ArticleList from './components/article-list'
+import ChannelEdit from './components/channel-edit'
 export default {
   name: 'home',
-  components: { ArticleList },
+  components: { ArticleList, ChannelEdit },
   data () {
     return {
       active: 0,
-      channels: []
+      channels: [],
+      isChannelEditShow: true // 控制频道编辑弹出层
     }
   },
   methods: {
@@ -72,6 +89,37 @@ export default {
       }
 
     }
+    .channel-tabs {
+      /deep/ .van-tab{
+        border-right: 1px solid #edeff3;
+        border-bottom: 1px solid #edeff3;
+      }
+      /deep/ .van-tabs__line {
+        width: 15px !important;
+        height: 3px;
+        background-color: #3296fa;
+        margin-bottom: 4px;
+      }
+    }
+    .wap-placeholder {
+      width: 33px;
+      flex-shrink: 0;
+    }
+    .wap-nav-wrap {
+        position: fixed;
+        right: 0;
+        height: 43px;
+        width: 33px;
+        line-height: 43px;
+        background-color: #fff;
+        opacity: 0.9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
   }
+  .channel-edit-popup {
+      height:100%;
+    }
 
 </style>

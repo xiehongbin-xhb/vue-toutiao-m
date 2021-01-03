@@ -86,6 +86,47 @@ export default {
         }
       }
     })
+    addAnyAdapter('/channels', (config) => {
+      return {
+        data: {
+          channels: window.channels
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/articles', (config) => {
+      let results = [];
+      if (config.params.isRefresh) {
+        return {
+          data: {
+            pre_timestamp: 1609646304064,
+            page: 1,
+            results: window.refreshList
+          },
+          status: 200
+        }
+      }
+      if (config.params.channel_id === 10) {
+        // 返回前端的文章
+        results = window.articleList2
+      } else if (config.params.channel_id === 5) {
+        // 返回推荐的文章
+        results = window.articleList3
+      } else if (config.params.channel_id === 0) {
+        // 返回其他的文章
+        results = window.articleList1
+      } else {
+        results = window.articleList4
+      }
+      return {
+        data: {
+          pre_timestamp: 1609646304064,
+          page: 1,
+          results
+        },
+        status: 200
+      }
+    })
     addGetAdapter('/tempData', () => {
       let now = Date.now();
       const data = [];

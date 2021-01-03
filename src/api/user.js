@@ -25,3 +25,10 @@ export const getCurrentUser = () => {
     // }
   })
 }
+// 获取用户登录信息
+export const getUserChannel = () => {
+  return request({
+    method: 'GET',
+    url: '/channels'
+  })
+}

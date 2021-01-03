@@ -1,4 +1,4 @@
-window.channels = [
+const channelsData = [
   { id: 0, name: '推荐' },
   { id: 5, name: 'android' },
   { id: 10, name: '前端' },
@@ -7,9 +7,9 @@ window.channels = [
   { id: 15, name: '产品' },
   { id: 19, name: '架构' },
   { id: 20, name: '区块链' },
-  { id: 25, name: 'JavaScript' },
+  { id: 25, name: 'JavaScript' }
 ]
-window.refreshList = [
+const refreshList = [
   {
     title: '下拉刷新文章1',
     art_id: 1111,
@@ -104,9 +104,9 @@ window.refreshList = [
     trace: {
       click: ''
     }
-  },
+  }
 ]
-window.articleList1 = [
+const articleList1 = [
   {
     title: '推荐文章1',
     art_id: 1111,
@@ -135,8 +135,10 @@ window.articleList1 = [
     collect_count: 1,
     comm_count: 1,
     cover: {
-      type: 0,
-      images: []
+      type: 1,
+      images: [
+        'https://img.yzcdn.cn/vant/cat.jpeg"'
+      ]
     },
     is_top: 0,
     like_count: 0,
@@ -154,8 +156,12 @@ window.articleList1 = [
     collect_count: 1,
     comm_count: 1,
     cover: {
-      type: 0,
-      images: []
+      type: 3,
+      images: [
+        'https://img.yzcdn.cn/vant/cat.jpeg"',
+        'https://img.yzcdn.cn/vant/cat.jpeg"',
+        'https://img.yzcdn.cn/vant/cat.jpeg"'
+      ]
     },
     is_top: 0,
     like_count: 0,
@@ -296,9 +302,9 @@ window.articleList1 = [
     trace: {
       click: ''
     }
-  },
+  }
 ]
-window.articleList2 = [
+const articleList2 = [
   {
     title: '前端文章1',
     art_id: 1111,
@@ -488,9 +494,9 @@ window.articleList2 = [
     trace: {
       click: ''
     }
-  },
+  }
 ]
-window.articleList3 = [
+const articleList3 = [
   {
     title: 'android文章1',
     art_id: 1111,
@@ -680,9 +686,9 @@ window.articleList3 = [
     trace: {
       click: ''
     }
-  },
+  }
 ]
-window.articleList4 = [
+const articleList4 = [
   {
     title: '文章1',
     art_id: 1111,
@@ -872,5 +878,14 @@ window.articleList4 = [
     trace: {
       click: ''
     }
-  },
+  }
 ]
+
+export default {
+  channelsData,
+  refreshList,
+  articleList1,
+  articleList2,
+  articleList3,
+  articleList4
+}

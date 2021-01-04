@@ -32,7 +32,7 @@ export default {
       handler: debounce(async function () {
         const { data } = await getSearchSuggestions(this.searchText);
         this.suggestions = data.data.options;
-      }, 1000),
+      }, 200),
       // async handler () {
       //   const { data } = await getSearchSuggestions(this.searchText);
       //   this.suggestions = data.data.options;

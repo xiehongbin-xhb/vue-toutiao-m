@@ -911,7 +911,6 @@ const articleList4 = [
     }
   }
 ]
-
 const mock = new MockAdapter(request)
 const addGetAdapter = function (url, func) {
   mock.onGet(url).reply(() => [200, func()]);
@@ -1074,6 +1073,21 @@ export default {
           pre_timestamp: 1609646304064,
           page: 1,
           results
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/searchSuggestions', (config) => {
+      const query = config.params.q;
+      return {
+        data: {
+          options: [
+            query + '联想结果1',
+            query + '联想结果2',
+            query + '联想结果3',
+            query + '联想结果4',
+            query + '联想结果5'
+          ]
         },
         status: 200
       }

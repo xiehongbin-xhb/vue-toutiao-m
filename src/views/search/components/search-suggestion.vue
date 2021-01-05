@@ -3,9 +3,10 @@
     <van-cell
       v-for="(str, index) in suggestions"
       :key="index"
-      :title="str"
       icon="search"
-    />
+    >
+      <div slot="title" v-html='highlight(str)'></div>
+    </van-cell>
   </div>
 </template>
 
@@ -33,11 +34,17 @@ export default {
         const { data } = await getSearchSuggestions(this.searchText);
         this.suggestions = data.data.options;
       }, 200),
-      // async handler () {
-      //   const { data } = await getSearchSuggestions(this.searchText);
-      //   this.suggestions = data.data.options;
-      // },
       immediate: true
+    }
+  },
+  methods: {
+    highlight (str) {
+      const highlightText = `<span style="color: red">${this.searchText}</span>`
+      // RegExp()  正则表达构造函数
+      // 参数1 字符串 或者变量
+      // 参数2 匹配模式
+      const exp = new RegExp(this.searchText, 'gi');
+      return str.replace(exp, highlightText);
     }
   }
 }

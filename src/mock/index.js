@@ -1082,11 +1082,11 @@ export default {
       return {
         data: {
           options: [
-            query + '联想结果1',
-            query + '联想结果2',
-            query + '联想结果3',
-            query + '联想结果4',
-            query + '联想结果5'
+            query + '联想结果1' + query,
+            query + '联想结果2' + query,
+            query + '联想结果3' + query,
+            query + '联想结果4' + query,
+            query + '联想结果5' + query
           ]
         },
         status: 200

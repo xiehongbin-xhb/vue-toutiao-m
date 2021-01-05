@@ -27,6 +27,7 @@
     <!-- 历史记录 -->
     <search-history
       v-else
+      @clickToSearch="onSearch"
       :searchHistory="searchHistory"
     />
 

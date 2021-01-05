@@ -911,6 +911,205 @@ const articleList4 = [
     }
   }
 ]
+const searchResultArticleList4 = [
+  {
+    title: '文章1',
+    art_id: 1111,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章2',
+    art_id: 11112,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章3',
+    art_id: 11113,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章4',
+    art_id: 11114,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章5',
+    art_id: 11115,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章6',
+    art_id: 11116,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章7',
+    art_id: 11117,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章8',
+    art_id: 11118,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章9',
+    art_id: 11119,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  },
+  {
+    title: '文章10',
+    art_id: 11110,
+    aut_id: 222,
+    aut_name: 'ForSakenSoul',
+    ch_id: 333,
+    collect_count: 1,
+    comm_count: 1,
+    cover: {
+      type: 0,
+      images: []
+    },
+    is_top: 0,
+    like_count: 0,
+    pubdate: '2020-06-12 09:25:25',
+    trace: {
+      click: ''
+    }
+  }
+]
+const searchHistory = [
+  '搜索历史记录1',
+  '搜索历史记录2',
+  '搜索历史记录3',
+  '搜索历史记录4',
+  '搜索历史记录5'
+]
 const mock = new MockAdapter(request)
 const addGetAdapter = function (url, func) {
   mock.onGet(url).reply(() => [200, func()]);
@@ -1091,7 +1290,27 @@ export default {
         },
         status: 200
       }
+    });
+    addAnyAdapter('/searchResults', (config) => {
+      return {
+        data: {
+          results: searchResultArticleList4,
+          page: 1,
+          per_page: 10,
+          total_count: 10
+        },
+        status: 200
+      }
     })
+    addAnyAdapter('/searchedHistory', (config) => {
+      return {
+        data: {
+          keywords: searchHistory
+        },
+        status: 200
+      }
+    })
+    // searchedHistory
     addGetAdapter('/tempData', () => {
       let now = Date.now();
       const data = [];

@@ -1309,6 +1309,35 @@ export default {
         },
         status: 200
       }
+    });
+    addAnyAdapter('/articlesContent', (config) => {
+      return {
+        data: {
+          data: {
+            title: '测试文章1',
+            art_id: 1111,
+            aut_id: 222,
+            aut_name: 'ForSakenSoul',
+            aut_photo: 'https://img.yzcdn.cn/vant/cat.jpeg',
+            ch_id: 333,
+            collect_count: 1,
+            comm_count: 1,
+            content: '<p>测试文章内容</p>',
+            cover: {
+              type: 0,
+              images: []
+            },
+            is_top: 0,
+            like_count: 0,
+            is_followed: true,
+            pubdate: '2020-06-12 09:25:25',
+            trace: {
+              click: ''
+            }
+          }
+        },
+        status: 200
+      }
     })
     // searchedHistory
     addGetAdapter('/tempData', () => {

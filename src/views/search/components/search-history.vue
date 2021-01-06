@@ -4,7 +4,7 @@
       title="搜索历史"
     >
       <div v-if="isDeleteShow">
-        <span @click="onDelete">全部删除</span>
+        <span @click="$emit('updateHistory', [])">全部删除</span>
         &nbsp;&nbsp;
         <span @click="isDeleteShow=false">完成</span>
       </div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { setItem } from '@/util/storage'
 export default {
   name: 'SearchHistory',
   data () {
@@ -41,8 +42,7 @@ export default {
       // 如果是删除状态
       if (this.isDeleteShow) {
         this.searchHistory.splice(index, 1);
-        // 1.修改本地存储数据
-        // 2. 请求接口删除线上数
+        setItem('search-history', this.searchHistory);
         return
       }
       // 非删除状态 需要展示搜索结果

@@ -27,6 +27,7 @@
     <!-- 历史记录 -->
     <search-history
       v-else
+      @updateHistory="searchHistory=$event"
       @clickToSearch="onSearch"
       :searchHistory="searchHistory"
     />
@@ -40,7 +41,7 @@ import SearchHistory from './components/search-history'
 import SearchResult from './components/search-result'
 import { setItem, getItem } from '@/util/storage'
 import { mapState } from 'vuex'
-import { getSearchedHistory } from '@/api/search'
+// import { getSearchedHistory } from '@/api/search'
 export default {
   name: 'SearchIndex',
   components: {
@@ -65,6 +66,12 @@ export default {
     this.loaderHistory();
   },
   props: {},
+  watch: {
+    searchHistory () {
+      // 当searchHistory变化时 统一做持久化
+      setItem('search-history', this.searchHistory);
+    }
+  },
   methods: {
     // 回车时
     onSearch (searchText) {
@@ -80,17 +87,17 @@ export default {
       // 数据持久化
       // 如果用户已登录，则把搜索历史记录存储到线上，并且这一步不需要调用接口，当调用搜索接口时，后端会自动存储
       // 如果没有登录，则存储数据到本地
-      setItem('search-history', this.searchHistory);
+      // setItem('search-history', this.searchHistory);
       this.searchText = searchText;
       this.isResultShow = true;
     },
     // 手动合并线上历史记录以及本地历史记录
     async loaderHistory () {
-      let localHistory = getItem('search-history') || [];
-      if (this.user) {
-        const { data } = await getSearchedHistory();
-        localHistory = [...new Set([...localHistory, ...data.data.keywords])];
-      }
+      const localHistory = getItem('search-history') || [];
+      // if (this.user) {
+      //   const { data } = await getSearchedHistory();
+      //   localHistory = [...new Set([...localHistory, ...data.data.keywords])];
+      // }
       this.searchHistory = localHistory;
     }
   }

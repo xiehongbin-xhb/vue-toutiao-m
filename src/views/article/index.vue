@@ -26,7 +26,7 @@
         :type="article.is_followed ? 'default' : 'info'"
       >{{ article.is_followed ? '已关注' : '关注'}}</van-button>
     </van-cell>
-    <div class="markdown-body" v-html="article.content">
+    <div class="markdown-body" v-html="article.content" ref="articleContent">
       <!-- 正式环境下显示的就是一些富文本标签 -->
       <!-- 富文本标签就是带有 -->
     </div>
@@ -37,6 +37,8 @@
 <script>
 import './github-markdown.css'
 import { getArticleContent } from '@/api/article'
+import { ImagePreview } from 'vant'
+
 export default {
   name: 'Article',
   data () {
@@ -60,8 +62,29 @@ export default {
       });
       console.log('data', res);
       this.article = res.data.data.data;
-      // this.article = data.data;
-      console.log('this.article', this.article.title);
+      this.handlePreviewImage();
+    },
+    handlePreviewImage () {
+      // 获取文章内容DOM容器，获取所有的img标签，给img注册点击事件
+      // 在事件处理函数中调用ImagePreView
+      const articleDOM = this.$refs.articleContent;
+      console.log('articleDOM', articleDOM);
+      // 数据改变触发视图更新， 不是立即的,所以直接获取返回空数组
+      // 如果需要在修改数据之后马上操作该数据影响的
+      const imgPaths = [];
+      this.$nextTick(() => {
+        const imgs = articleDOM.querySelectorAll('img');
+        console.log('imgs', imgs);
+        imgs.forEach((img, index) => {
+          imgPaths.push(img.src);
+          img.onclick = function () {
+            ImagePreview({
+              images: imgPaths,
+              startPosition: index
+            });
+          }
+        })
+      })
     }
   }
 }

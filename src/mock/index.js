@@ -1322,7 +1322,9 @@ export default {
             ch_id: 333,
             collect_count: 1,
             comm_count: 1,
-            content: '<p>测试文章内容</p>',
+            content: `<p><img alt="" src="https://img.yzcdn.cn/vant/cat.jpeg"></p>
+            <p><img alt="" src="https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg"></p>
+            <p>这样一来，岂不是连父子组件通信都省了嘛？</p>`,
             cover: {
               type: 0,
               images: []

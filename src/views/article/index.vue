@@ -28,6 +28,7 @@
     </van-cell>
     <div class="markdown-body" v-html="article.content">
       <!-- 正式环境下显示的就是一些富文本标签 -->
+      <!-- 富文本标签就是带有 -->
     </div>
   </div>
 

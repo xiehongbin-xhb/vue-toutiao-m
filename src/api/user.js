@@ -54,3 +54,25 @@ export const deleteFollower = (userId) => {
     }
   })
 }
+
+// 收藏文章
+export const addCollected = (artId) => {
+  return request({
+    method: 'POST',
+    url: '/addCollected',
+    data: {
+      targetId: artId
+    }
+  })
+}
+
+// 取消收藏
+export const deleteCollected = (artId) => {
+  return request({
+    method: 'POST',
+    url: '/deleteCollected',
+    data: {
+      targetId: artId
+    }
+  })
+}

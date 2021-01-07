@@ -32,6 +32,23 @@
       <!-- 正式环境下显示的就是一些富文本标签 -->
       <!-- 富文本标签就是带有 -->
     </div>
+    <!-- 底部区域 -->
+    <div class="article-bottom">
+      <van-button
+        class="comment-btn"
+        type='default'
+        round
+        size="small"
+      >写评论</van-button>
+      <van-icon name="comment-o" info="123" color="#777" />
+      <van-icon
+        :name="article.is_collected ? 'star' :'star-o'"
+        :color="article.is_collected ? 'orange' :'#777'"
+        @click="onCollect"
+      />
+      <van-icon name="good-job-o"  color="#777" />
+      <van-icon name="share"  color="#777" />
+    </div>
   </div>
 
 </template>
@@ -39,7 +56,7 @@
 <script>
 import './github-markdown.css'
 import { getArticleContent } from '@/api/article'
-import { addFollower, deleteFollower } from '@/api/user'
+import { addFollower, deleteFollower, addCollected, deleteCollected } from '@/api/user'
 import { ImagePreview } from 'vant'
 
 export default {
@@ -100,6 +117,22 @@ export default {
       // 更新视图
       this.article.is_followed = !this.article.is_followed;
       this.isFollowLoading = false;
+    },
+    async onCollect () {
+      this.$toast.loading({
+        message: '操作中',
+        forbidClick: true // 禁止背景点击
+      })
+      // 已关注，取消关注
+      if (this.article.is_collected) {
+        await deleteCollected(this.article.art_id);
+      } else {
+        // 没有关注，则取消关注
+        await addCollected(this.article.art_id);
+      }
+      // 更新视图
+      this.article.is_collected = !this.article.is_collected;
+      this.$toast.success(`${this.article.is_collected ? '' : '取消'}收藏成功`);
     }
   }
 }
@@ -138,5 +171,20 @@ export default {
   ul {
     list-style: unset;
   }
+  .article-bottom {
+    background-color: #fff;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .comment-btn {
+      width: 150px;
+    }
+  }
+
 }
 </style>

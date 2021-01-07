@@ -1332,6 +1332,7 @@ export default {
             is_top: 0,
             like_count: 0,
             is_followed: true,
+            is_collected: false,
             pubdate: '2020-06-12 09:25:25',
             trace: {
               click: ''
@@ -1349,6 +1350,20 @@ export default {
       }
     })
     addAnyAdapter('/deleteFollower', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/addCollected', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/deleteCollected', (config) => {
       return {
         data: {
         },

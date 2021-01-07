@@ -1341,6 +1341,20 @@ export default {
         status: 200
       }
     })
+    addAnyAdapter('/addFollower', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/deleteFollower', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
     // searchedHistory
     addGetAdapter('/tempData', () => {
       let now = Date.now();

@@ -24,6 +24,8 @@
         round
         size="small"
         :type="article.is_followed ? 'default' : 'info'"
+        @click="onFollow"
+        :loading='isFollowLoading'
       >{{ article.is_followed ? '已关注' : '关注'}}</van-button>
     </van-cell>
     <div class="markdown-body" v-html="article.content" ref="articleContent">
@@ -37,13 +39,15 @@
 <script>
 import './github-markdown.css'
 import { getArticleContent } from '@/api/article'
+import { addFollower, deleteFollower } from '@/api/user'
 import { ImagePreview } from 'vant'
 
 export default {
   name: 'Article',
   data () {
     return {
-      article: {} // 文章数据
+      article: {}, // 文章数据
+      isFollowLoading: false // 关注用户按钮 状态
     }
   },
   props: {
@@ -68,13 +72,11 @@ export default {
       // 获取文章内容DOM容器，获取所有的img标签，给img注册点击事件
       // 在事件处理函数中调用ImagePreView
       const articleDOM = this.$refs.articleContent;
-      console.log('articleDOM', articleDOM);
       // 数据改变触发视图更新， 不是立即的,所以直接获取返回空数组
       // 如果需要在修改数据之后马上操作该数据影响的
       const imgPaths = [];
       this.$nextTick(() => {
         const imgs = articleDOM.querySelectorAll('img');
-        console.log('imgs', imgs);
         imgs.forEach((img, index) => {
           imgPaths.push(img.src);
           img.onclick = function () {
@@ -85,6 +87,19 @@ export default {
           }
         })
       })
+    },
+    async onFollow () {
+      this.isFollowLoading = true;
+      // 已关注，取消关注
+      if (this.article.is_followed) {
+        await deleteFollower(this.article.aut_id);
+      } else {
+        // 没有关注，则取消关注
+        await addFollower(this.article.aut_id);
+      }
+      // 更新视图
+      this.article.is_followed = !this.article.is_followed;
+      this.isFollowLoading = false;
     }
   }
 }

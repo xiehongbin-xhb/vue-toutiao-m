@@ -12,7 +12,7 @@
         <div class="name">{{comment.aut_name}}</div>
         <div class="like-wrap">
           <van-icon name='good-job-o' class="like-icon" />
-          <span class="like-count">12</span>
+          <span class="like-count">{{comment.like_count}}</span>
         </div>
       </div>
       <div class="content">{{comment.content}}</div>
@@ -22,7 +22,7 @@
           class="reply-btn"
           round
           size="mini"
-        >18回复</van-button>
+        >{{comment.reply_count}}回复</van-button>
       </div>
     </div>
 
@@ -69,6 +69,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    .like-count {
+      margin-left: 3px;
+    }
   }
 }
 </style>

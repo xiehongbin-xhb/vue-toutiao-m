@@ -6,31 +6,35 @@
       left-arrow
       @click-left="$router.back()"
     />
-    <h1 class="title">{{article.title}}</h1>
-    <van-cell center class="user-info">
-      <div slot="title" class="name">{{article.aut_name}}</div>
-      <van-image
-        class="avator"
-        slot="icon"
-        round
-        center
-        fit="cover"
-        :src="article.aut_photo"
-      />
-      <div slot="label" class="pubdate">{{article.pubdate | relativeTime}}</div>
-      <van-button
-        :icon="article.is_followed ? '' : 'plus'"
-        class="follow-btn"
-        round
-        size="small"
-        :type="article.is_followed ? 'default' : 'info'"
-        @click="onFollow"
-        :loading='isFollowLoading'
-      >{{ article.is_followed ? '已关注' : '关注'}}</van-button>
-    </van-cell>
-    <div class="markdown-body" v-html="article.content" ref="articleContent">
-      <!-- 正式环境下显示的就是一些富文本标签 -->
-      <!-- 富文本标签就是带有 -->
+    <div class="article-wrap">
+      <h1 class="title">{{article.title}}</h1>
+      <van-cell center class="user-info">
+        <div slot="title" class="name">{{article.aut_name}}</div>
+        <van-image
+          class="avator"
+          slot="icon"
+          round
+          center
+          fit="cover"
+          :src="article.aut_photo"
+        />
+        <div slot="label" class="pubdate">{{article.pubdate | relativeTime}}</div>
+        <van-button
+          :icon="article.is_followed ? '' : 'plus'"
+          class="follow-btn"
+          round
+          size="small"
+          :type="article.is_followed ? 'default' : 'info'"
+          @click="onFollow"
+          :loading='isFollowLoading'
+        >{{ article.is_followed ? '已关注' : '关注'}}</van-button>
+      </van-cell>
+      <div class="markdown-body" v-html="article.content" ref="articleContent">
+        <!-- 正式环境下显示的就是一些富文本标签 -->
+        <!-- 富文本标签就是带有 -->
+      </div>
+      <!-- 文章评论列表 -->
+      <comment-list/>
     </div>
     <!-- 底部区域 -->
     <div class="article-bottom">
@@ -58,9 +62,12 @@ import './github-markdown.css'
 import { getArticleContent } from '@/api/article'
 import { addFollower, deleteFollower, addCollected, deleteCollected } from '@/api/user'
 import { ImagePreview } from 'vant'
-
+import CommentList from './components/comment-list'
 export default {
   name: 'Article',
+  components: {
+    CommentList
+  },
   data () {
     return {
       article: {}, // 文章数据
@@ -140,37 +147,46 @@ export default {
 
 <style lang="less" scoped>
 .article-containner {
-  .title {
-    font-size: 20px;
-    color:#3a3a3a;
-    padding: 14px;
-    background-color: #fff;
-    margin: 0;
+  .article-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 46px;
+    bottom: 44px;
+    overflow-y: auto;
+    .title {
+      font-size: 20px;
+      color:#3a3a3a;
+      padding: 14px;
+      background-color: #fff;
+      margin: 0;
+    }
+    .avator {
+      width: 35px;
+      height: 35px;
+      padding-right: 8px;
+    }
+    .user-info {
+      font-size: 12px;
+      color:#333;
+    }
+    .pubdate {
+      font-size: 12px;
+      color:#b4b4b4;
+    }
+    .follow-btn {
+      width: 85px;
+      height: 29px;
+    }
+    .markdown-body {
+      padding: 14px;
+      background-color: #fff;
+    }
+    ul {
+      list-style: unset;
+    }
   }
-  .avator {
-    width: 35px;
-    height: 35px;
-    padding-right: 8px;
-  }
-  .user-info {
-    font-size: 12px;
-    color:#333;
-  }
-  .pubdate {
-    font-size: 12px;
-    color:#b4b4b4;
-  }
-  .follow-btn {
-    width: 85px;
-    height: 29px;
-  }
-  .markdown-body {
-    padding: 14px;
-    background-color: #fff;
-  }
-  ul {
-    list-style: unset;
-  }
+
   .article-bottom {
     background-color: #fff;
     height: 50px;

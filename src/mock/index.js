@@ -1406,7 +1406,7 @@ export default {
               aut_name: '黑马头条号',
               aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
               com_id: 1124324,
-              content: '评论1121344232134323244',
+              content: '黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号',
               is_liking: false,
               is_top: 0,
               like_count: 0,

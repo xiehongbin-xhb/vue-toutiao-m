@@ -17,7 +17,7 @@
       </div>
       <div class="content">{{comment.content}}</div>
       <div>
-        <span class="pubdate">{{comment.pubdate | dateTime}}</span>
+        <span class="pubdate">{{comment.pubdate | dateTime('MM:DD HH:mm')}}</span>
         <van-button
           class="reply-btn"
           round
@@ -63,6 +63,12 @@ export default {
   }
   .pubdate {
     font-size: 10px;
+    margin-right: 10px;
+  }
+  .like-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

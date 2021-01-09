@@ -13,6 +13,6 @@ Vue.filter('relativeTime', value => {
   return dayjs(value).from(dayjs());
 })
 
-Vue.filter('dateTime', value => {
-  return dayjs(value).format('MM-DD HH:mm');
+Vue.filter('dateTime', (value, format = 'YYYY-MM-DD HH:mm:ss') => {
+  return dayjs(value).format(format);
 })

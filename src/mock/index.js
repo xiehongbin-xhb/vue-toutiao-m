@@ -1370,6 +1370,55 @@ export default {
         status: 200
       }
     })
+    addAnyAdapter('/comments', (config) => {
+      console.log('getComments', config);
+      return {
+        data: {
+          end_id: 111111111,
+          last_id: 11111111,
+          results: [
+            {
+              aut_id: 111,
+              aut_name: '黑马头条号',
+              aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+              com_id: 1124324,
+              content: '评论1222',
+              is_liking: false,
+              is_top: 0,
+              like_count: 0,
+              pubdate: '2020-02-02 15:45:12',
+              reply_count: 1
+            },
+            {
+              aut_id: 111,
+              aut_name: '黑马头条号',
+              aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+              com_id: 1124324,
+              content: '评论1121344234',
+              is_liking: false,
+              is_top: 0,
+              like_count: 0,
+              pubdate: '2020-02-02 15:45:12',
+              reply_count: 1
+            },
+            {
+              aut_id: 111,
+              aut_name: '黑马头条号',
+              aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+              com_id: 1124324,
+              content: '评论1121344232134323244',
+              is_liking: false,
+              is_top: 0,
+              like_count: 0,
+              pubdate: '2020-02-02 15:45:12',
+              reply_count: 1
+            }
+          ],
+          total_count: 100
+        },
+        status: 200
+      }
+    })
     // searchedHistory
     addGetAdapter('/tempData', () => {
       let now = Date.now();

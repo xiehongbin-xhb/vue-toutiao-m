@@ -17,3 +17,12 @@ export const getArticleContent = (params) => {
     params
   })
 }
+
+// 获取文章评论或评论回复
+export const getComments = (params) => {
+  return request({
+    method: 'GET',
+    url: '/comments',
+    params
+  })
+}

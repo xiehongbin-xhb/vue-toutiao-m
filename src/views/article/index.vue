@@ -34,7 +34,9 @@
         <!-- 富文本标签就是带有 -->
       </div>
       <!-- 文章评论列表 -->
-      <comment-list/>
+      <comment-list
+        :source="articleId"
+      />
     </div>
     <!-- 底部区域 -->
     <div class="article-bottom">
@@ -152,7 +154,7 @@ export default {
     left: 0;
     right: 0;
     top: 46px;
-    bottom: 44px;
+    bottom: 50px;
     overflow-y: auto;
     .title {
       font-size: 20px;

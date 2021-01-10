@@ -1371,7 +1371,6 @@ export default {
       }
     })
     addAnyAdapter('/comments', (config) => {
-      console.log('getComments', config);
       return {
         data: {
           end_id: 111111111,
@@ -1407,14 +1406,51 @@ export default {
               aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
               com_id: 1124324,
               content: '黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号黑马头条号',
+              is_liking: true,
+              is_top: 0,
+              like_count: 1,
+              pubdate: '2020-02-02 15:45:12',
+              reply_count: 1
+            }
+          ],
+          total_count: 100
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/addCommentLike', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/deleteCommentLike', (config) => {
+      return {
+        data: {
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/addComments', (config) => {
+      const data = JSON.parse(config.data)
+      console.log('addComments', data.content);
+      return {
+        data: {
+          data: {
+            new_obj: {
+              aut_id: 111,
+              aut_name: '黑马头条号',
+              aut_photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+              com_id: 1124324,
+              content: data.content,
               is_liking: false,
               is_top: 0,
               like_count: 0,
               pubdate: '2020-02-02 15:45:12',
               reply_count: 1
             }
-          ],
-          total_count: 100
+          }
         },
         status: 200
       }

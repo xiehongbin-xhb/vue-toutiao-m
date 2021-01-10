@@ -8,10 +8,14 @@
       slot="icon"
     />
     <div slot="title">
-      <div class="title-wrap">
+      <div class="title-wrap" @click="onCommentLike" >
         <div class="name">{{comment.aut_name}}</div>
         <div class="like-wrap">
-          <van-icon name='good-job-o' class="like-icon" />
+          <van-icon
+            :name="comment.is_liking ? 'good-job' :'good-job-o'"
+            :class="{ liked: comment.is_liking}"
+            class="like-icon"
+          />
           <span class="like-count">{{comment.like_count}}</span>
         </div>
       </div>
@@ -30,12 +34,29 @@
 </template>
 
 <script>
+import { addCommentLike, deleteCommentLike } from '@/api/article'
 export default {
   name: 'CommentItem',
   props: {
     comment: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    async onCommentLike () {
+      console.log('this.comment.', this.comment);
+      const commentId = this.comment.com_id.toString();
+      console.log('commentId', this.comment.is_liking);
+      // 判断是否点赞
+      if (this.comment.is_liking) {
+        await deleteCommentLike(commentId);
+        this.comment.like_count--;
+      } else {
+        await addCommentLike(commentId);
+        this.comment.like_count++;
+      }
+      this.comment.is_liking = !this.comment.is_liking;
     }
   }
 }
@@ -71,6 +92,9 @@ export default {
     justify-content: center;
     .like-count {
       margin-left: 3px;
+    };
+    .liked {
+      color: orange;
     }
   }
 }

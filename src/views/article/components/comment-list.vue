@@ -30,11 +30,16 @@ export default {
     source: {
       type: [Number, String, Object],
       required: true
+    },
+    list: {
+      type: Array,
+      // 数组和对象的默认值必须通过函数返回
+      default: () => []
     }
   },
   data () {
     return {
-      list: [],
+      // list: [],
       loading: false,
       finished: false,
       offset: null, // 获取下一页数据的页码
@@ -43,8 +48,6 @@ export default {
   },
   methods: {
     async onLoad () {
-      console.log('onLoad', getComments);
-      console.log(this.source);
       const { data } = await getComments({
         type: 'a', // 对文章的评论传a 对评论的回复传c
         source: this.source, // 文章评论，或者评论id

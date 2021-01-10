@@ -26,3 +26,33 @@ export const getComments = (params) => {
     params
   })
 }
+// 对评论或者评论回复点赞
+export const addCommentLike = (commentId) => {
+  return request({
+    method: 'POST',
+    url: '/addCommentLike',
+    data: {
+      target: commentId
+    }
+  })
+}
+
+// 取消对评论或者评论回复点赞
+export const deleteCommentLike = (commentId) => {
+  return request({
+    method: 'POST',
+    url: '/deleteCommentLike',
+    data: {
+      target: commentId
+    }
+  })
+}
+
+// 添加评论或评论回复
+export const addComments = (data) => {
+  return request({
+    method: 'POST',
+    url: '/addComments',
+    data
+  })
+}

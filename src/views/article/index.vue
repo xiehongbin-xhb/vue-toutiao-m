@@ -35,6 +35,7 @@
       </div>
       <!-- 文章评论列表 -->
       <comment-list
+        :list="commentList"
         :source="articleId"
       />
     </div>
@@ -45,6 +46,7 @@
         type='default'
         round
         size="small"
+        @click="isCommentPopup = true"
       >写评论</van-button>
       <van-icon name="comment-o" info="123" color="#777" />
       <van-icon
@@ -55,6 +57,13 @@
       <van-icon name="good-job-o"  color="#777" />
       <van-icon name="share"  color="#777" />
     </div>
+    <!-- 发布评论弹出层 -->
+    <van-popup
+      v-model="isCommentPopup"
+      position="bottom"
+    >
+      <post-comment :target="articleId"  @postSuccess="onPostSuccess" ></post-comment>
+    </van-popup>
   </div>
 
 </template>
@@ -65,15 +74,19 @@ import { getArticleContent } from '@/api/article'
 import { addFollower, deleteFollower, addCollected, deleteCollected } from '@/api/user'
 import { ImagePreview } from 'vant'
 import CommentList from './components/comment-list'
+import PostComment from './components/post-comment'
 export default {
   name: 'Article',
   components: {
-    CommentList
+    CommentList,
+    PostComment
   },
   data () {
     return {
       article: {}, // 文章数据
-      isFollowLoading: false // 关注用户按钮 状态
+      isFollowLoading: false, // 关注用户按钮 状态
+      isCommentPopup: false, // 写评论弹出层
+      commentList: [] // 文章评论列表
     }
   },
   props: {
@@ -142,6 +155,13 @@ export default {
       // 更新视图
       this.article.is_collected = !this.article.is_collected;
       this.$toast.success(`${this.article.is_collected ? '' : '取消'}收藏成功`);
+    },
+    onPostSuccess (comment) {
+      // 发布成功的评论数据放到评论列表顶部
+      console.log('comment', comment);
+      this.commentList.unshift(comment);
+      // 关闭弹出层
+      this.isCommentPopup = false;
     }
   }
 }

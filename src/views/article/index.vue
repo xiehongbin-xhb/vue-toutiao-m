@@ -38,6 +38,7 @@
         @update-total-count="totalCommentCount = $event"
         :list="commentList"
         :source="articleId"
+        @reply-click="onReplyClick"
       />
     </div>
     <!-- 底部区域 -->
@@ -68,6 +69,19 @@
     >
       <post-comment :target="articleId"  @postSuccess="onPostSuccess" ></post-comment>
     </van-popup>
+    <!-- 评论回复 -->
+    <van-popup
+      v-model="isCommentReplyPopup"
+      position="bottom"
+    >
+      <comment-reply
+        @close="isCommentReplyPopup=false"
+        :comment="replyComment"
+        v-if="isCommentReplyPopup"
+        :articleId="articleId"
+      />
+      <!-- v-if="isCommentReplyPopup"  依赖的值发生改变时，会重新渲染该组件。为了解决弹出层懒加载的问题-->
+    </van-popup>
   </div>
 
 </template>
@@ -79,11 +93,13 @@ import { addFollower, deleteFollower, addCollected, deleteCollected } from '@/ap
 import { ImagePreview } from 'vant'
 import CommentList from './components/comment-list'
 import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 export default {
   name: 'Article',
   components: {
     CommentList,
-    PostComment
+    PostComment,
+    CommentReply
   },
   data () {
     return {
@@ -91,7 +107,9 @@ export default {
       isFollowLoading: false, // 关注用户按钮 状态
       isCommentPopup: false, // 写评论弹出层
       commentList: [], // 文章评论列表
-      totalCommentCount: 0
+      totalCommentCount: 0,
+      isCommentReplyPopup: false, // 评论回复弹出窗
+      replyComment: {} // 当前评论对象
     }
   },
   props: {
@@ -169,6 +187,11 @@ export default {
       this.isCommentPopup = false;
       // 更新评论总数
       this.totalCommentCount++;
+    },
+    onReplyClick (comment) {
+      this.replyComment = comment;
+      console.log('comment', comment);
+      this.isCommentReplyPopup = true;
     }
   }
 }

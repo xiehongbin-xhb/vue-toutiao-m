@@ -13,6 +13,7 @@
         :key="index"
         :title="comment.content"
         :comment="comment"
+        @reply-click="$emit('reply-click',$event)"
       />
     </van-list>
   </div>
@@ -30,6 +31,10 @@ export default {
     source: {
       type: [Number, String, Object],
       required: true
+    },
+    type: {
+      type: String,
+      default: 'a'
     },
     list: {
       type: Array,
@@ -49,8 +54,8 @@ export default {
   methods: {
     async onLoad () {
       const { data } = await getComments({
-        type: 'a', // 对文章的评论传a 对评论的回复传c
-        source: this.source, // 文章评论，或者评论id
+        type: this.type, // 对文章的评论传a 对评论的回复传c
+        source: this.source.toString(), // 文章评论，或者评论id
         offset: this.offset, // 页码
         limit: this.limit // 每页大小
       });

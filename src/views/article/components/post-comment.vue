@@ -1,7 +1,7 @@
 <template>
   <div class="post-comment">
     <van-field
-      v-model="message"
+      v-model.trim="message"
       rows="2"
       autosize
       type="textarea"

@@ -35,6 +35,7 @@
       </div>
       <!-- 文章评论列表 -->
       <comment-list
+        @update-total-count="totalCommentCount = $event"
         :list="commentList"
         :source="articleId"
       />
@@ -48,7 +49,10 @@
         size="small"
         @click="isCommentPopup = true"
       >写评论</van-button>
-      <van-icon name="comment-o" info="123" color="#777" />
+      <van-icon name="comment-o"
+        :info="totalCommentCount"
+        color="#777"
+      />
       <van-icon
         :name="article.is_collected ? 'star' :'star-o'"
         :color="article.is_collected ? 'orange' :'#777'"
@@ -86,7 +90,8 @@ export default {
       article: {}, // 文章数据
       isFollowLoading: false, // 关注用户按钮 状态
       isCommentPopup: false, // 写评论弹出层
-      commentList: [] // 文章评论列表
+      commentList: [], // 文章评论列表
+      totalCommentCount: 0
     }
   },
   props: {
@@ -162,6 +167,8 @@ export default {
       this.commentList.unshift(comment);
       // 关闭弹出层
       this.isCommentPopup = false;
+      // 更新评论总数
+      this.totalCommentCount++;
     }
   }
 }

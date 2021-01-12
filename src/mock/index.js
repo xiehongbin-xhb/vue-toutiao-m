@@ -1455,6 +1455,30 @@ export default {
         status: 200
       }
     })
+    addAnyAdapter('/getUserProfile', (config) => {
+      return {
+        data: {
+          birthday: '1995-09-26',
+          gender: 1,
+          name: 'ForSakensoul',
+          photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+          mobile: '15606950280'
+        },
+        status: 200
+      }
+    })
+    addAnyAdapter('/updateUserProfile', (config) => {
+      return {
+        data: {
+          birthday: '1995-09-26',
+          gender: 1,
+          name: 'ForSakensoul',
+          photo: 'https://s3.ax1x.com/2021/01/03/spvGwt.md.jpg',
+          mobile: '15606950280'
+        },
+        status: 200
+      }
+    })
     // searchedHistory
     addGetAdapter('/tempData', () => {
       let now = Date.now();

@@ -76,3 +76,19 @@ export const deleteCollected = (artId) => {
     }
   })
 }
+
+// 获取用户资料
+export const getUserProfile = () => {
+  return request({
+    method: 'POST',
+    url: '/getUserProfile'
+  })
+}
+// 修改用户资料
+export const updateUserProfile = (data) => {
+  return request({
+    method: 'POST',
+    url: '/updateUserProfile',
+    data
+  })
+}

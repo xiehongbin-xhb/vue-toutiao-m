@@ -28,14 +28,18 @@ import { updateUserProfile } from '@/api/user'
 export default {
   name: 'UpdateName',
   props: {
-    name: {
+    // name: {
+    //   type: String,
+    //   required: true
+    // }
+    value: {
       type: String,
       required: true
     }
   },
   data () {
     return {
-      localName: this.name
+      localName: this.value
     }
   },
   methods: {
@@ -50,7 +54,8 @@ export default {
       });
       this.$toast.success('保存成功');
       // 更新成功 修改父组件的的name 关闭弹出层
-      this.$emit('update-name', this.localName);
+      // this.$emit('update-name', this.localName);
+      this.$emit('input', this.localName);
       this.$emit('close');
     }
   }

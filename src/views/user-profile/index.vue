@@ -83,6 +83,7 @@
       position="bottom"
     >
       <update-birthday
+        v-if="isEditBirthdayPopupShow"
         v-model="user.birthday"
         @close="isEditBirthdayPopupShow=false"
       />

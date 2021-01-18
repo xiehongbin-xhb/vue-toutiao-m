@@ -38,13 +38,14 @@ export default {
         message: '保存中',
         forbidClick: true
       })
+      const date = `${this.currentDate.getFullYear()}-${this.currentDate.getMonth() + 1}-${this.currentDate.getDate()}`
       // 请求提交更新生日
       await updateUserProfile({
-        birthday: `${this.currentDate.getFullYear()}-${this.currentDate.getMonth() + 1}-${this.currentDate.getDate()}`
+        birthday: date
       });
       this.$toast.success('保存成功');
       // 更新成功 修改父组件的的name 关闭弹出层
-      this.$emit('input', this.defaultIndex);
+      this.$emit('input', date);
       this.$emit('close');
     }
   }

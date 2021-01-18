@@ -92,3 +92,11 @@ export const updateUserProfile = (data) => {
     data
   })
 }
+// 修改用户照片资料
+export const updateUserPhoto = (data) => {
+  return request({
+    method: 'POST',
+    url: '/updateUserPhoto',
+    data
+  })
+}

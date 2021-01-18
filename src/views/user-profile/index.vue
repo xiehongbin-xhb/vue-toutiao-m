@@ -7,7 +7,14 @@
       left-arrow
       @click-left="$router.back()"
     />
-    <van-cell title="头像" center is-link>
+    <input
+      type="file"
+      hidden
+      ref="file"
+      accept="image/*"
+      @change="onFileChange"
+    />
+    <van-cell title="头像" center is-link @click="$refs.file.click()">
        <van-image
         fit="cover"
         width="30"
@@ -88,6 +95,18 @@
         @close="isEditBirthdayPopupShow=false"
       />
     </van-popup>
+    <!-- 修改头像弹出层 -->
+    <van-popup
+      v-model="isEditPhotoPopupShow"
+      position="bottom"
+      style="height=100%"
+    >
+    <update-photo
+      @close="isEditPhotoPopupShow=false"
+      :previewImage="previewImage"
+      @update-photo="user.photo=$event"
+    />
+    </van-popup>
   </div>
 </template>
 
@@ -96,19 +115,23 @@ import UpdateName from './components/update-name'
 import { getUserProfile } from '@/api/user'
 import UpdateGender from './components/update-gender'
 import UpdateBirthday from './components/update-birthday'
+import UpdatePhoto from './components/update-photo.vue'
 export default {
   name: 'UserProfile',
   components: {
     UpdateName,
     UpdateGender,
-    UpdateBirthday
+    UpdateBirthday,
+    UpdatePhoto
   },
   data () {
     return {
       isEditNamePopupShow: false,
       isEditGenderPopupShow: false, // 编辑性别
       user: {}, // 用户数据
-      isEditBirthdayPopupShow: false
+      isEditBirthdayPopupShow: false,
+      isEditPhotoPopupShow: false,
+      previewImage: null
     }
   },
   created () {
@@ -118,6 +141,16 @@ export default {
     async loaderUserProfile () {
       const { data } = await getUserProfile();
       this.user = data.data;
+    },
+    onFileChange () {
+      console.log('change');
+      // 展示弹出层
+      this.isEditPhotoPopupShow = true;
+      // 在弹出层里预览图片
+      // const blob = window.URL.createObjectURL(this.$refs.file.files[0]);
+      const file = this.$refs.file.files[0];
+      this.previewImage = file;
+      this.$refs.file.value = ''; // 清空file的值，为了解决相同文件时不触发change事件
     }
   }
 }
